@@ -156,8 +156,84 @@ export default function AdminDashboard() {
     setContent([]);
   };
 
+  // Default values matching frontend components
+  const defaultContent: Record<string, any> = {
+    hero: {
+      badge: "Agra's Premier Educational Institution",
+      heading: "",
+      baseText: "Education Beyond",
+      rotatingWords: "Classrooms,Boundaries,Limits,Expectations,Convention,Tradition",
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+    },
+    section1: {
+      heading: "Not Just a School.",
+      subheading: "A Future-Building Institution.",
+      description: "We combine strong academics with practical learning, discipline, and real-world exposure.",
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+      videoTitle: "Classroom & Practical Learning"
+    },
+    section2: {
+      heading: "Learning by Doing,",
+      subheading: "Not Memorizing",
+      description: "Students understand concepts through practical application, activities, and guided experiences.",
+      video1Url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+      video1Title: "Science Labs & Experiments",
+      video2Url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+      video2Title: "Interactive Classroom Learning"
+    },
+    section3: {
+      heading: "Government Job Preparation",
+      subheading: "Built Into School Life",
+      description: "The only school in North India where competitive exam foundations are part of the regular curriculum.",
+      video1Url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+      video1Title: "NDA Foundation Training",
+      video2Url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+      video2Title: "Reasoning & Aptitude",
+      video3Url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+      video3Title: "Discipline & Values"
+    },
+    section4: {
+      heading: "Agra's Best GTO Ground",
+      subheading: "For Defence Aspirants",
+      description: "Real training. Real obstacles. Real confidence for future officers.",
+      video1Url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreet.mp4",
+      video1Title: "GTO Ground Training",
+      video2Url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+      video2Title: "Teamwork & Command Tasks"
+    },
+    section5: {
+      heading: "Strong Mind. Sharp Focus.",
+      subheading: "Confident Students.",
+      description: "Expert teachers, regular guidance, and mental relaxation practices shape balanced individuals.",
+      video1Url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4",
+      video1Title: "Expert Teachers & Guidance",
+      video2Url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4",
+      video2Title: "Meditation & Mental Wellness"
+    },
+    section6: {
+      heading: "Academics, Sports & Leadership",
+      subheading: "All Together",
+      description: "We encourage students to grow in classrooms, playgrounds, and competitive environments.",
+      video1Url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      video1Title: "Science Exhibitions",
+      video2Url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      video2Title: "Boxing & Sports",
+      video3Url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+      video3Title: "Competitive Activities"
+    },
+    section7: {
+      heading: "A Message from",
+      subheading: "the Director",
+      description: "Our vision is to prepare disciplined, confident, and capable citizens for the nation.",
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+      videoTitle: "Director's Message"
+    }
+  };
+
   const getContentItem = (sectionKey: string) => {
-    return content.find((item) => item.section_key === sectionKey)?.contentData || {};
+    const savedContent = content.find((item) => item.section_key === sectionKey)?.contentData || {};
+    // Merge with defaults so users can see current values
+    return { ...defaultContent[sectionKey], ...savedContent };
   };
 
   const updateContentItem = (sectionKey: string, contentType: string, updates: any) => {
@@ -350,6 +426,7 @@ export default function AdminDashboard() {
             getContentItem={getContentItem}
             updateContentItem={updateContentItem}
             saving={saving}
+            defaultContent={defaultContent}
           />
         )}
       </div>
@@ -363,18 +440,22 @@ function ContentEditor({
   getContentItem,
   updateContentItem,
   saving,
+  defaultContent,
 }: {
   content: ContentItem[];
   getContentItem: (key: string) => any;
   updateContentItem: (key: string, type: string, updates: any) => void;
   saving: boolean;
+  defaultContent: Record<string, any>;
 }) {
   const sections = [
     {
       key: "hero",
       title: "Hero Section",
       fields: [
-        { key: "heading", label: "Main Heading", type: "text" },
+        { key: "heading", label: "Main Heading (Custom - overrides rotating text)", type: "text" },
+        { key: "baseText", label: "Base Text (e.g., 'Education Beyond')", type: "text" },
+        { key: "rotatingWords", label: "Rotating Words (comma-separated, e.g., 'Classrooms,Boundaries,Limits')", type: "text" },
         { key: "badge", label: "Badge Text", type: "text" },
         { key: "videoUrl", label: "Hero Video URL", type: "url" },
       ],
@@ -387,6 +468,7 @@ function ContentEditor({
         { key: "subheading", label: "Subheading", type: "text" },
         { key: "description", label: "Description", type: "textarea" },
         { key: "videoUrl", label: "Video URL", type: "url" },
+        { key: "videoTitle", label: "Video Title", type: "text" },
       ],
     },
     {
@@ -502,6 +584,7 @@ function ContentEditor({
                       }}
                       className="w-full px-4 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 text-black"
                       rows={3}
+                      placeholder={sectionData[field.key] ? undefined : `Current: ${defaultContent[section.key]?.[field.key] || 'Not set'}`}
                     />
                   ) : (
                     <input
@@ -521,8 +604,19 @@ function ContentEditor({
                         });
                       }}
                       className="w-full px-4 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 text-black"
-                      placeholder={`Enter ${field.label.toLowerCase()}`}
+                      placeholder={sectionData[field.key] ? undefined : `Current: ${defaultContent[section.key]?.[field.key] || 'Not set'}`}
                     />
+                  )}
+                  {/* Show current value indicator */}
+                  {sectionData[field.key] && (
+                    <p className="mt-1 text-xs text-gray-600">
+                      ✓ Current value shown above
+                    </p>
+                  )}
+                  {!sectionData[field.key] && defaultContent[section.key]?.[field.key] && (
+                    <p className="mt-1 text-xs text-yellow-600 italic">
+                      💡 Default value: {String(defaultContent[section.key][field.key]).substring(0, 60)}{String(defaultContent[section.key][field.key]).length > 60 ? '...' : ''}
+                    </p>
                   )}
                 </div>
               ))}

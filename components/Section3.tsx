@@ -37,9 +37,9 @@ export default function Section3() {
   const video3Title = content?.video3Title || "Discipline & Values";
 
   return (
-    <section className="py-20 md:py-28 bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
+    <section className="py-20 md:py-28 bg-white overflow-x-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+        <div className="max-w-6xl mx-auto w-full">
           <ScrollAnimation>
             <div className="text-center mb-16">
               <div className="inline-block px-4 py-2 bg-yellow-400 text-black rounded-full text-sm font-black mb-4">
@@ -54,7 +54,8 @@ export default function Section3() {
               </p>
             </div>
           </ScrollAnimation>
-          <div className="grid md:grid-cols-3 gap-6 justify-items-center">
+          {/* Desktop Grid */}
+          <div className="hidden md:grid md:grid-cols-3 gap-6 justify-items-center">
             <div className="w-full max-w-[350px]">
               <ScrollAnimation delay={100}>
                 <VideoPlayer 
@@ -82,6 +83,40 @@ export default function Section3() {
                 />
               </ScrollAnimation>
             </div>
+          </div>
+
+          {/* Mobile Horizontal Scroll */}
+          <div className="md:hidden relative">
+            <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory px-4" style={{ 
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              WebkitOverflowScrolling: 'touch'
+            }}>
+              <div className="flex-shrink-0 w-[85vw] max-w-[320px] snap-center">
+                <VideoPlayer 
+                  videoUrl={video1Url}
+                  title={video1Title}
+                  key={video1Url}
+                />
+              </div>
+              <div className="flex-shrink-0 w-[85vw] max-w-[320px] snap-center">
+                <VideoPlayer 
+                  videoUrl={video2Url}
+                  title={video2Title}
+                  key={video2Url}
+                />
+              </div>
+              <div className="flex-shrink-0 w-[85vw] max-w-[320px] snap-center">
+                <VideoPlayer 
+                  videoUrl={video3Url}
+                  title={video3Title}
+                  key={video3Url}
+                />
+              </div>
+            </div>
+            {/* Fade edges indicator */}
+            <div className="absolute left-0 top-0 bottom-4 w-8 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
+            <div className="absolute right-0 top-0 bottom-4 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
           </div>
         </div>
       </div>

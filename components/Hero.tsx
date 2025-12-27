@@ -3,18 +3,23 @@
 import { useState, useEffect } from "react";
 import VideoPlayer from "./VideoPlayer";
 
-const rotatingTexts = [
-  "Education Beyond Classrooms",
-  "Building Future Leaders",
-  "Excellence in Academics",
-  "Discipline & Character",
-  "Career-Focused Learning",
-  "Holistic Development",
+// Default rotating words (only the last word changes)
+const defaultRotatingWords = [
+  "Classrooms",
+  "Boundaries",
+  "Limits",
+  "Expectations",
+  "Convention",
+  "Tradition",
 ];
 
+// Default base text (stays constant)
+const defaultBaseText = "Education Beyond";
+
 export default function Hero() {
-  const [currentTextIndex, setCurrentTextIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [typedText, setTypedText] = useState("");
+  const [isTyping, setIsTyping] = useState(true);
   const [content, setContent] = useState<any>(null);
   const [heroVideoUrl, setHeroVideoUrl] = useState("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4");
 
@@ -40,19 +45,45 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsVisible(false);
-      setTimeout(() => {
-        setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length);
-        setIsVisible(true);
-      }, 500);
-    }, 3000); // Change text every 3 seconds
-
-    return () => clearInterval(interval);
-  }, []);
-
   const badge = content?.badge || "Agra's Premier Educational Institution";
+  const customHeading = content?.heading;
+  
+  // Get base text and rotating words from content, or use defaults
+  const baseText = content?.baseText || defaultBaseText;
+  const rotatingWords = content?.rotatingWords?.split(',').map((w: string) => w.trim()) || defaultRotatingWords;
+  const currentWord = rotatingWords[currentWordIndex] || rotatingWords[0];
+  
+  // Typing effect for rotating words
+  useEffect(() => {
+    if (customHeading) {
+      // Stop typing if custom heading is set
+      return;
+    }
+
+    // Reset typed text when word changes
+    setTypedText("");
+    setIsTyping(true);
+    let charIndex = 0;
+
+    // Type out the word character by character
+    const typingInterval = setInterval(() => {
+      if (charIndex < currentWord.length) {
+        setTypedText(currentWord.substring(0, charIndex + 1));
+        charIndex++;
+      } else {
+        // Word is complete, wait a bit then move to next word
+        setIsTyping(false);
+        clearInterval(typingInterval);
+        
+        // Wait 2 seconds after typing is complete, then fade out and move to next word
+        setTimeout(() => {
+          setCurrentWordIndex((prev) => (prev + 1) % rotatingWords.length);
+        }, 2000);
+      }
+    }, 100); // Type each character every 100ms
+
+    return () => clearInterval(typingInterval);
+  }, [currentWordIndex, currentWord, customHeading, rotatingWords.length]);
 
   return (
     <section
@@ -75,8 +106,8 @@ export default function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center max-w-7xl mx-auto">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 overflow-x-hidden">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center max-w-7xl mx-auto w-full">
           {/* Left Side - Text Content */}
           <div className="text-center lg:text-left order-2 lg:order-1">
             {/* Badge */}
@@ -87,16 +118,24 @@ export default function Hero() {
               {badge}
             </div>
 
-            {/* Rotating Heading */}
+            {/* Heading - Custom or Rotating with Typing Effect */}
             <div className="min-h-[120px] sm:min-h-[140px] md:min-h-[160px] lg:min-h-[180px] flex items-center justify-center lg:justify-start mb-8">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-[1.1]">
-                <span
-                  className={`inline-block transition-all duration-500 ${
-                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-                  }`}
-                >
-                  {rotatingTexts[currentTextIndex]}
-                </span>
+                {customHeading ? (
+                  // If custom heading is set, show it as-is
+                  <span className="inline-block">{customHeading}</span>
+                ) : (
+                  // Otherwise, show base text + typing word (in yellow)
+                  <>
+                    <span className="inline-block">{baseText} </span>
+                    <span className="inline-block text-yellow-400">
+                      {typedText}
+                      {isTyping && (
+                        <span className="inline-block w-0.5 h-[0.9em] bg-yellow-400 ml-1 animate-pulse">|</span>
+                      )}
+                    </span>
+                  </>
+                )}
               </h1>
             </div>
 
@@ -104,7 +143,7 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a
                 href="#contact"
-                className="group relative w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 text-black px-8 py-4 rounded-xl text-lg font-black transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-yellow-400/50 transform hover:-translate-y-1 flex items-center justify-center gap-2"
+                className="group relative w-full sm:w-auto bg-white hover:bg-gray-100 text-black px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-base sm:text-lg font-black transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-white/50 transform hover:-translate-y-1 flex items-center justify-center gap-2"
               >
                 <svg
                   className="w-5 h-5 group-hover:scale-110 transition-transform"
@@ -119,7 +158,7 @@ export default function Hero() {
           </div>
 
           {/* Right Side - Video */}
-          <div className="relative order-1 lg:order-2">
+          <div className="relative order-1 lg:order-2 w-full px-2 sm:px-0 overflow-hidden">
             <VideoPlayer
               videoUrl={heroVideoUrl}
               title="Hero Video"

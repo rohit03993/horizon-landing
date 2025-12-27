@@ -13,10 +13,17 @@ export async function GET(request: NextRequest) {
       contentData: row.content_data ? JSON.parse(row.content_data) : null
     }));
 
-    return NextResponse.json({ content });
+    const response = NextResponse.json({ content });
+    // Prevent caching to ensure fresh content
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+    return response;
   } catch (error: any) {
     console.error('Error fetching content:', error);
-    return NextResponse.json({ content: [] });
+    const errorResponse = NextResponse.json({ content: [] });
+    errorResponse.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    return errorResponse;
   }
 }
 

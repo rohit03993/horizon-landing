@@ -110,8 +110,8 @@ export default function InstagramReelPlayer({
   }
 
   return (
-    <div className={`relative rounded-2xl overflow-hidden shadow-2xl border-4 border-yellow-400 ${className}`}>
-      <div className="aspect-[9/16] w-full relative bg-black max-w-sm mx-auto overflow-hidden">
+    <div className={`relative rounded-2xl overflow-hidden shadow-2xl border-2 sm:border-4 border-yellow-400 ${className} w-full`} style={{ maxWidth: '100%', boxSizing: 'border-box' }}>
+      <div className="aspect-[9/16] w-full relative bg-black overflow-hidden" style={{ maxWidth: '100%', boxSizing: 'border-box' }}>
         {/* Loading State */}
         {isLoading && (
           <div className="absolute inset-0 bg-black flex items-center justify-center z-30">

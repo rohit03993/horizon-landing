@@ -39,9 +39,9 @@ export default function Section2() {
   const video2Title = content?.video2Title || "Interactive Classroom Learning";
 
   return (
-    <section className="py-20 md:py-28 bg-gray-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
+    <section className="py-20 md:py-28 bg-gray-50 overflow-x-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+        <div className="max-w-6xl mx-auto w-full">
           <ScrollAnimation>
             <div className="text-center mb-16">
               <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-black mb-6">
@@ -53,13 +53,14 @@ export default function Section2() {
               </p>
             </div>
           </ScrollAnimation>
-          <div className="grid md:grid-cols-2 gap-8 justify-items-center">
+          {/* Desktop Grid */}
+          <div className="hidden md:grid md:grid-cols-2 gap-8 justify-items-center">
             <div className="w-full max-w-[400px]">
               <ScrollAnimation delay={100}>
                 <VideoPlayer 
                   videoUrl={video1Url}
                   title={video1Title}
-                  key={video1Url} // Force re-render when URL changes
+                  key={video1Url}
                 />
               </ScrollAnimation>
             </div>
@@ -68,10 +69,37 @@ export default function Section2() {
                 <VideoPlayer 
                   videoUrl={video2Url}
                   title={video2Title}
-                  key={video2Url} // Force re-render when URL changes
+                  key={video2Url}
                 />
               </ScrollAnimation>
             </div>
+          </div>
+
+          {/* Mobile Horizontal Scroll */}
+          <div className="md:hidden relative">
+            <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory px-4" style={{ 
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              WebkitOverflowScrolling: 'touch'
+            }}>
+              <div className="flex-shrink-0 w-[85vw] max-w-[320px] snap-center">
+                <VideoPlayer 
+                  videoUrl={video1Url}
+                  title={video1Title}
+                  key={video1Url}
+                />
+              </div>
+              <div className="flex-shrink-0 w-[85vw] max-w-[320px] snap-center">
+                <VideoPlayer 
+                  videoUrl={video2Url}
+                  title={video2Title}
+                  key={video2Url}
+                />
+              </div>
+            </div>
+            {/* Fade edges indicator */}
+            <div className="absolute left-0 top-0 bottom-4 w-8 bg-gradient-to-r from-gray-50 to-transparent pointer-events-none"></div>
+            <div className="absolute right-0 top-0 bottom-4 w-8 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none"></div>
           </div>
         </div>
       </div>

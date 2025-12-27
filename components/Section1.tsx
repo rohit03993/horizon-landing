@@ -72,9 +72,9 @@ export default function Section1() {
   ];
 
   return (
-    <section className="py-20 md:py-28 bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+    <section className="py-20 md:py-28 bg-white overflow-x-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+        <div className="max-w-7xl mx-auto w-full">
           <ScrollAnimation>
             <div className="text-center mb-16">
               <div className="inline-block px-4 py-2 bg-yellow-400 text-black rounded-full text-sm font-black mb-4">
@@ -114,8 +114,8 @@ export default function Section1() {
 
             {/* Video */}
             <ScrollAnimation delay={200}>
-              <div className="relative w-full max-w-[400px] mx-auto">
-                <div className="absolute -inset-4 bg-yellow-400 rounded-3xl blur-2xl opacity-30"></div>
+              <div className="relative w-full max-w-full sm:max-w-[400px] mx-auto px-2 sm:px-0">
+                <div className="absolute -inset-2 sm:-inset-4 bg-yellow-400 rounded-3xl blur-2xl opacity-30"></div>
                 <div className="relative">
                   <VideoPlayer 
                     videoUrl={videoUrl}

@@ -33,9 +33,9 @@ export default function Section7() {
   const videoTitle = content?.videoTitle || "Director's Message";
 
   return (
-    <section className="py-20 md:py-28 bg-black">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
+    <section className="py-20 md:py-28 bg-black overflow-x-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+        <div className="max-w-4xl mx-auto w-full">
           <ScrollAnimation>
             <div className="text-center mb-16">
               <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-6">
@@ -48,7 +48,7 @@ export default function Section7() {
             </div>
           </ScrollAnimation>
           <ScrollAnimation delay={200}>
-            <div className="max-w-[400px] mx-auto">
+            <div className="max-w-full sm:max-w-[400px] mx-auto px-2 sm:px-0">
               <VideoPlayer 
                 videoUrl={videoUrl}
                 title={videoTitle}
