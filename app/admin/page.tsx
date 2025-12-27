@@ -16,7 +16,8 @@ interface ContentItem {
   id?: number;
   section_key: string;
   content_type: string;
-  content_data: any;
+  content_data?: any;
+  contentData?: any; // Parsed content_data
 }
 
 type Tab = "submissions" | "content";
