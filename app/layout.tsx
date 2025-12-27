@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 
@@ -18,6 +18,12 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Horizon Competition School - Education Beyond Classrooms",
   description: "Where academics, discipline, and future careers begin together. Agra's best school for defence preparation, NDA foundation, and holistic education.",
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({

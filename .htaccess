@@ -1,15 +1,16 @@
 RewriteEngine On
 
-# Serve existing files directly (images, CSS, JS, etc.)
+# Serve Next.js static assets directly (highest priority)
+RewriteCond %{REQUEST_URI} ^/_next
+RewriteRule ^(.*)$ - [L]
+
+# Serve existing physical files directly (images, CSS, JS, etc.)
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^(.*)$ - [L]
 
-# Serve Next.js static assets directly
-RewriteCond %{REQUEST_URI} ^/_next/static
-RewriteRule ^(.*)$ - [L]
-
-# Serve public folder files directly (logo, etc.)
-RewriteCond %{REQUEST_URI} \.(jpg|jpeg|png|gif|svg|ico|css|js|woff|woff2|ttf|eot|mp4|webm|pdf)$
+# Serve public folder files directly (logo, etc.) - check file extensions
+RewriteCond %{REQUEST_URI} \.(jpg|jpeg|png|gif|svg|ico|css|js|woff|woff2|ttf|eot|mp4|webm|pdf|webp)$ [NC]
+RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^(.*)$ - [L]
 
 # Proxy all other requests to Node.js via PHP
