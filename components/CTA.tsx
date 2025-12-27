@@ -145,7 +145,7 @@ export default function CTA() {
                 </div>
                 {submitStatus === "success" && (
                   <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
-                    ✓ Thank you! We'll get back to you soon.
+                    ✓ Thank you! We&apos;ll get back to you soon.
                   </div>
                 )}
                 {submitStatus === "error" && (

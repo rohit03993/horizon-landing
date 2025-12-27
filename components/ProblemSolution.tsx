@@ -14,7 +14,7 @@ export default function ProblemSolution() {
               </h2>
               <p className="text-lg text-muted-foreground">
                 Many businesses face challenges with outdated strategies, lack
-                of visibility, and ineffective marketing approaches that don't
+                of visibility, and ineffective marketing approaches that don&apos;t
                 deliver results.
               </p>
               <ul className="space-y-3 text-muted-foreground">

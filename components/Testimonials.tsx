@@ -31,7 +31,7 @@ export default function Testimonials() {
             What Our Clients Say
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Don't just take our word for it - hear from our satisfied customers
+            Don&apos;t just take our word for it - hear from our satisfied customers
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -53,7 +53,7 @@ export default function Testimonials() {
                 ))}
               </div>
               <p className="text-muted-foreground mb-6 text-lg">
-                "{testimonial.content}"
+                &quot;{testimonial.content}&quot;
               </p>
               <div>
                 <p className="font-semibold text-foreground">
