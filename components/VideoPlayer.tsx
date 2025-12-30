@@ -83,11 +83,15 @@ export default function VideoPlayer({
   if (isYouTube && youtubeVideoId) {
     // For YouTube Shorts, use the shorts embed URL, otherwise use regular embed
     const isShorts = normalizedUrl.includes('/shorts/');
-    // Since user clicks to play, we can use mute=0 for sound (user interaction allows unmuted autoplay)
-    // Simplified URL format to avoid Error 153
+    // Get the current origin for YouTube embed (helps avoid Error 153)
+    // Use a fallback if window is not available (shouldn't happen in client component, but safety first)
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://horizoncompetitionschool.com';
+    // Use mute=1 initially (browsers block unmuted autoplay), user can unmute after click
+    // Add origin parameter to help YouTube identify the embedding domain and avoid Error 153
+    const baseParams = `autoplay=1&mute=1&controls=1&rel=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(origin)}`;
     const embedUrl = isShorts 
-      ? `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&mute=0&controls=1&rel=0&playsinline=1&loop=1`
-      : `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&mute=0&controls=1&rel=0&playsinline=1`;
+      ? `https://www.youtube.com/embed/${youtubeVideoId}?${baseParams}&loop=1`
+      : `https://www.youtube.com/embed/${youtubeVideoId}?${baseParams}`;
     const thumbnailUrl = `https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`;
     
     return (
