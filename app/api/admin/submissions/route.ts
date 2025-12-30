@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getDbConnection } from '@/lib/db';
 import jwt from 'jsonwebtoken';
 
+// Force dynamic rendering (this route uses request.headers)
+export const dynamic = 'force-dynamic';
+
 // Verify JWT token
 function verifyToken(token: string | null) {
   if (!token) {
