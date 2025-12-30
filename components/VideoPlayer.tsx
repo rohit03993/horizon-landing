@@ -129,6 +129,7 @@ export default function VideoPlayer({
               src={embedUrl}
               className="w-full h-full"
               frameBorder="0"
+              referrerPolicy="strict-origin-when-cross-origin"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
               allowFullScreen
               style={{ border: 'none', display: 'block', width: '100%', height: '100%', minHeight: '100%' }}
