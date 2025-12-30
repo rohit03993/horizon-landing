@@ -11,6 +11,9 @@ import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
+// Force dynamic rendering to prevent static caching
+export const dynamic = 'force-dynamic';
+
 export default function Home() {
   return (
     <main className="min-h-screen overflow-x-hidden max-w-full">

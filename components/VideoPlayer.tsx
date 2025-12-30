@@ -10,15 +10,30 @@ interface VideoPlayerProps {
   isInstagramReel?: boolean;
 }
 
+// Helper function to normalize YouTube URL
+function normalizeYouTubeUrl(url: string): string {
+  if (!url) return url;
+  // If it's already a full URL, return as is
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  // If it starts with youtube.com or youtu.be, add https://
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    return `https://${url}`;
+  }
+  return url;
+}
+
 // Helper function to extract YouTube video ID
 function getYouTubeVideoId(url: string): string | null {
+  const normalizedUrl = normalizeYouTubeUrl(url);
   const patterns = [
     /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([^&\n?#]+)/,
     /youtube\.com\/embed\/([^&\n?#]+)/,
   ];
   
   for (const pattern of patterns) {
-    const match = url.match(pattern);
+    const match = normalizedUrl.match(pattern);
     if (match) return match[1];
   }
   return null;
@@ -26,7 +41,8 @@ function getYouTubeVideoId(url: string): string | null {
 
 // Helper function to check if URL is YouTube
 function isYouTubeUrl(url: string): boolean {
-  return /youtube\.com|youtu\.be/.test(url);
+  const normalizedUrl = normalizeYouTubeUrl(url);
+  return /youtube\.com|youtu\.be/.test(normalizedUrl);
 }
 
 export default function VideoPlayer({ 
@@ -40,7 +56,8 @@ export default function VideoPlayer({
   const videoRef = useRef<HTMLVideoElement>(null);
   const previewRef = useRef<HTMLVideoElement>(null);
 
-  // Auto-detect video type
+  // Normalize and auto-detect video type
+  const normalizedUrl = normalizeYouTubeUrl(videoUrl);
   const isInstagramUrl = videoUrl.includes('instagram.com') || isInstagramReel;
   const isYouTube = isYouTubeUrl(videoUrl);
   const youtubeVideoId = useMemo(() => isYouTube ? getYouTubeVideoId(videoUrl) : null, [videoUrl, isYouTube]);
