@@ -75,7 +75,12 @@ export default function VideoPlayer({
 
   // If it's a YouTube URL, use YouTube embed
   if (isYouTube && youtubeVideoId) {
-    const embedUrl = `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&controls=1&modestbranding=1&rel=0&playsinline=1`;
+    // For YouTube Shorts, use the shorts embed URL, otherwise use regular embed
+    // mute=1 is required for autoplay to work in most browsers
+    const isShorts = normalizedUrl.includes('/shorts/');
+    const embedUrl = isShorts 
+      ? `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&controls=1&modestbranding=1&rel=0&playsinline=1&mute=1&loop=1`
+      : `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&controls=1&modestbranding=1&rel=0&playsinline=1&mute=1`;
     const thumbnailUrl = `https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`;
     
     return (
@@ -112,11 +117,21 @@ export default function VideoPlayer({
             </div>
           ) : (
             <iframe
+              key={`youtube-${youtubeVideoId}-${isPlaying}`}
               src={embedUrl}
               className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
-              style={{ border: 'none' }}
+              style={{ border: 'none', display: 'block', width: '100%', height: '100%', minHeight: '100%' }}
+              title={title || "YouTube video"}
+              loading="eager"
+              onLoad={() => {
+                console.log('YouTube iframe loaded successfully');
+              }}
+              onError={(e) => {
+                console.error('YouTube iframe error:', e);
+              }}
             />
           )}
           
