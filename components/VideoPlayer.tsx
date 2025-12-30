@@ -76,11 +76,12 @@ export default function VideoPlayer({
   // If it's a YouTube URL, use YouTube embed
   if (isYouTube && youtubeVideoId) {
     // For YouTube Shorts, use the shorts embed URL, otherwise use regular embed
-    // mute=1 is required for autoplay to work in most browsers
     const isShorts = normalizedUrl.includes('/shorts/');
+    // Since user clicks to play, we can use mute=0 for sound (user interaction allows unmuted autoplay)
+    // Simplified URL format to avoid Error 153
     const embedUrl = isShorts 
-      ? `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&controls=1&modestbranding=1&rel=0&playsinline=1&mute=1&loop=1`
-      : `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&controls=1&modestbranding=1&rel=0&playsinline=1&mute=1`;
+      ? `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&mute=0&controls=1&rel=0&playsinline=1&loop=1`
+      : `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&mute=0&controls=1&rel=0&playsinline=1`;
     const thumbnailUrl = `https://img.youtube.com/vi/${youtubeVideoId}/maxresdefault.jpg`;
     
     return (
