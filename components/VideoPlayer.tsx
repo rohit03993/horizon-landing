@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import InstagramReelPlayer from "./InstagramReelPlayer";
 
 interface VideoPlayerProps {
@@ -55,6 +55,12 @@ export default function VideoPlayer({
   const [isLoading, setIsLoading] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const previewRef = useRef<HTMLVideoElement>(null);
+
+  // Reset playing state when video URL changes
+  useEffect(() => {
+    setIsPlaying(false);
+    setIsLoading(false);
+  }, [videoUrl]);
 
   // Normalize and auto-detect video type
   const normalizedUrl = normalizeYouTubeUrl(videoUrl);

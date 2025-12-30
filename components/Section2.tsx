@@ -26,7 +26,7 @@ export default function Section2() {
   useEffect(() => {
     fetchContent();
     // Refresh every 5 seconds to get latest content
-    const interval = setInterval(fetchContent, 5000);
+    const interval = setInterval(fetchContent, 2000);
     return () => clearInterval(interval);
   }, []);
 

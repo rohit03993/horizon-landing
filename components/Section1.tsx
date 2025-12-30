@@ -22,7 +22,8 @@ export default function Section1() {
 
   useEffect(() => {
     fetchContent();
-    const interval = setInterval(fetchContent, 5000);
+    // Refresh every 2 seconds for faster content updates
+    const interval = setInterval(fetchContent, 2000);
     return () => clearInterval(interval);
   }, []);
 

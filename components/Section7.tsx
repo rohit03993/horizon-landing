@@ -22,7 +22,7 @@ export default function Section7() {
 
   useEffect(() => {
     fetchContent();
-    const interval = setInterval(fetchContent, 5000);
+    const interval = setInterval(fetchContent, 2000);
     return () => clearInterval(interval);
   }, []);
 
